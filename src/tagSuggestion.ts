@@ -3,7 +3,7 @@ import config from './config'
 import { formatField } from './formatter'
 import { supportedTags } from './constant'
 
-export function getSuggestions(text: string): vscode.CompletionItem[] {
+export function getTagSuggestions(text: string): vscode.CompletionItem[] {
     let field: string
     let partialTag: string
     try {
@@ -63,7 +63,7 @@ function generateCompletionItems(tag: string, field: string): vscode.CompletionI
 }
 
 function getCompletion(field: string, tag: string): vscode.CompletionItem[] {
-	const cfg = config.getSuggestionConfig(tag)
+	const cfg = config.getTagSuggestionConfig(tag)
 	if (!cfg) {
 		return []
 	}
@@ -85,7 +85,7 @@ function getCompletion(field: string, tag: string): vscode.CompletionItem[] {
 }
 
 function getNonVariableCompletion(tag: string): vscode.CompletionItem[] {
-	const cfg = config.getNonVariableSuggestionConfig(tag)
+	const cfg = config.getNonVariableTagSuggestionConfig(tag)
 	if (!cfg) {
 		return []
 	}

@@ -2,17 +2,18 @@ export type Tag = 'json' | 'bson' | 'binding'
 export type Case = 'none' | 'camel' | 'snake' | 'pascal'
 
 export type Config = {
-	suggestion: SuggestionConfig
+	tagSuggestion: TagSuggestionConfig
+	valueSuggestion: ValueSuggestionConfig
 	generation: GenerationConfig
 }
 
-export type SuggestionConfig = {
-	json: TagSuggestionConfig
-	bson: TagSuggestionConfig
+export type TagSuggestionConfig = {
+	json: TagSuggestionWithVariableConfig
+	bson: TagSuggestionWithVariableConfig
 	binding: TagSuggestionNonVariableConfig
 }
 
-export type TagSuggestionConfig = {
+export type TagSuggestionWithVariableConfig = {
 	enabled: boolean
 	cases: Case[]
 	options: string[]
@@ -21,6 +22,10 @@ export type TagSuggestionConfig = {
 export type TagSuggestionNonVariableConfig = {
 	enabled: boolean
 	choices: string[]
+}
+
+export type ValueSuggestionConfig = {
+	[name: string]: string[]
 }
 
 export type GenerationConfig = {

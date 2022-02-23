@@ -1,7 +1,7 @@
 import { Config } from './types'
 
 export const defaultConfig: Config = {
-    suggestion: {
+    tagSuggestion: {
         json: {
             enabled: true,
             cases: ["camel"],
@@ -16,6 +16,11 @@ export const defaultConfig: Config = {
             enabled: true,
             choices: ["required"]
         }
+    },
+    valueSuggestion: {
+        "json": ["omitempty"],
+        "bson": ["omitempty"],
+        "binding": ["required"]
     },
     generation: {
         tags: "json:\"{{camel}}\" bson:\"{{snake}}\""

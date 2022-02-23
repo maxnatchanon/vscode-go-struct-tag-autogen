@@ -1,51 +1,71 @@
 import * as vscode from 'vscode'
-import { Config, GenerationConfig, TagSuggestionConfig, TagSuggestionNonVariableConfig } from './types'
+import { Config, GenerationConfig, TagSuggestionWithVariableConfig, TagSuggestionNonVariableConfig, ValueSuggestionConfig } from './types'
 import { defaultConfig } from './defaultConfig'
 
-let userConfig: Config = defaultConfig
+let currentConfig: Config = defaultConfig
 
 let workspaceSettings: vscode.WorkspaceConfiguration
 
+let valueSuggestionChangeCallback: (() => void) | undefined
+
 function init(): vscode.Disposable {
 	loadConfig()
-	return vscode.workspace.onDidChangeConfiguration(() => loadConfig())
+	return vscode.workspace.onDidChangeConfiguration(() => {
+		const prevConfig = JSON.parse(JSON.stringify(currentConfig)) as Config
+		loadConfig()
+		if (valueSuggestionChangeCallback && Object.keys(currentConfig.valueSuggestion) !== Object.keys(prevConfig.valueSuggestion)) {
+			valueSuggestionChangeCallback()
+		}
+	})
 }
 
 function loadConfig() {
 	workspaceSettings = vscode.workspace.getConfiguration('goStructTagAutogen')
 
-	userConfig.suggestion.json = workspaceSettings.get<TagSuggestionConfig>('suggestion.json') || defaultConfig.suggestion.json
-	userConfig.suggestion.bson = workspaceSettings.get<TagSuggestionConfig>('suggestion.bson') || defaultConfig.suggestion.bson
-	userConfig.suggestion.binding = workspaceSettings.get<TagSuggestionNonVariableConfig>('suggestion.binding') || defaultConfig.suggestion.binding
+	currentConfig.tagSuggestion.json = workspaceSettings.get<TagSuggestionWithVariableConfig>('tagSuggestion.json') || defaultConfig.tagSuggestion.json
+	currentConfig.tagSuggestion.bson = workspaceSettings.get<TagSuggestionWithVariableConfig>('tagSuggestion.bson') || defaultConfig.tagSuggestion.bson
+	currentConfig.tagSuggestion.binding = workspaceSettings.get<TagSuggestionNonVariableConfig>('tagSuggestion.binding') || defaultConfig.tagSuggestion.binding
 
-	userConfig.generation = workspaceSettings.get<GenerationConfig>('generation') || defaultConfig.generation
+	currentConfig.valueSuggestion = workspaceSettings.get<ValueSuggestionConfig>('valueSuggestion') || defaultConfig.valueSuggestion
+
+	currentConfig.generation = workspaceSettings.get<GenerationConfig>('generation') || defaultConfig.generation
 }
 
-function getSuggestionConfig(tag: string): (TagSuggestionConfig | undefined) {
+function onValueSuggestionConfigChange(callback: () => void) {
+	valueSuggestionChangeCallback = callback
+}
+
+function getTagSuggestionConfig(tag: string): (TagSuggestionWithVariableConfig | undefined) {
 	switch (tag) {
 		case 'json':
-			return userConfig.suggestion.json
+			return currentConfig.tagSuggestion.json
 		case 'bson':
-			return userConfig.suggestion.bson
+			return currentConfig.tagSuggestion.bson
 	}
 	return undefined
 }
 
-function getNonVariableSuggestionConfig(tag: string): (TagSuggestionNonVariableConfig | undefined) {
+function getNonVariableTagSuggestionConfig(tag: string): (TagSuggestionNonVariableConfig | undefined) {
 	switch (tag) {
 		case 'binding':
-			return userConfig.suggestion.binding
+			return currentConfig.tagSuggestion.binding
 	}
 	return undefined
+}
+
+function getValueSuggestionConfig(): (ValueSuggestionConfig) {
+	return currentConfig.valueSuggestion
 }
 
 function getGenerationConfig(): GenerationConfig {
-	return userConfig.generation
+	return currentConfig.generation
 }
 
 export default {
 	init,
-	getSuggestionConfig,
-	getNonVariableSuggestionConfig,
+	onValueSuggestionConfigChange,
+	getTagSuggestionConfig,
+	getNonVariableTagSuggestionConfig,
+	getValueSuggestionConfig,
 	getGenerationConfig,
 }

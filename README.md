@@ -7,7 +7,7 @@
 ## Features
 
 **Struct tag autocomplete**  
-Variable cases and options are customizable (see the config below)  
+Variable cases and options are customizable *(see the config below)*  
 
 TODO
 
@@ -16,9 +16,15 @@ Currently supported cases: `camel` | `snake`, `pascal`, `none`
 
 TODO
 
+**Struct tag value autocomplete**  
+Suggestion list for each tag can be configured *(see the config below)*   
+Any tag can be added for value suggestion (doesn't need to be supported by tag autocomplete above)
+
+TODO
+
 
 **Generate struct tags command**  
-Generated tags are configurable (see the config below)  
+Generated tags are configurable *(see the config below)*  
 
 TODO
 

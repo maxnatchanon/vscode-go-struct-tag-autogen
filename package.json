@@ -37,7 +37,7 @@
 		"configuration": {
 			"title": "Go Struct Tag Autocomplete & Generator",
 			"properties": {
-				"goStructTagAutogen.suggestion.json": {
+				"goStructTagAutogen.tagSuggestion.json": {
 					"type": "object",
 					"default": {
 						"enabled": true,
@@ -46,7 +46,7 @@
 					},
 					"description": "Go struct tag suggestion config for `json` tag"
 				},
-				"goStructTagAutogen.suggestion.bson": {
+				"goStructTagAutogen.tagSuggestion.bson": {
 					"type": "object",
 					"default": {
 						"enabled": true,
@@ -55,13 +55,22 @@
 					},
 					"description": "Go struct tag suggestion config for `bson` tag"
 				},
-				"goStructTagAutogen.suggestion.binding": {
+				"goStructTagAutogen.tagSuggestion.binding": {
 					"type": "object",
 					"default": {
 						"enabled": true,
 						"choices": ["required"]
 					},
 					"description": "Go struct tag suggestion config for `binding` tag"
+				},
+				"goStructTagAutogen.valueSuggestion": {
+					"type": "object",
+					"default": {
+						"json": ["omitempty"],
+						"bson": ["omitempty"],
+						"binding": ["required"]
+					},
+					"description": "Go struct tag value suggestion config"
 				},
 				"goStructTagAutogen.generation": {
 					"type": "object",
