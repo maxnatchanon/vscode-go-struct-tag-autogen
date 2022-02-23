@@ -17,8 +17,21 @@
 		"commands": [
 			{
 				"command": "goStructTagAutoGen.generateStructTags",
-				"category": "Go Tag Autogen",
-				"title": "Generate Struct Tags"
+				"title": "Go Tag Autogen: Generate Struct Tags"
+			}
+		],
+		"menus": {
+			"editor/context": [{
+				"when": "resourceLangId == go",
+				"command": "goStructTagAutoGen.generateStructTags",
+				"group": "goStructTagAutogen"
+			}]
+		},
+		"keybindings": [
+			{
+				"command": "goStructTagAutoGen.generateStructTags",
+				"mac": "ctrl+shift+t",
+				"when": "editorTextFocus"
 			}
 		],
 		"configuration": {
