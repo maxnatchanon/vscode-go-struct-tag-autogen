@@ -12,7 +12,7 @@ function init(): vscode.Disposable {
 }
 
 function loadConfig() {
-	workspaceSettings = vscode.workspace.getConfiguration('goStructTagAutoGen')
+	workspaceSettings = vscode.workspace.getConfiguration('goStructTagAutogen')
 
 	userConfig.suggestion.json = workspaceSettings.get<TagSuggestionConfig>('suggestion.json') || defaultConfig.suggestion.json
 	userConfig.suggestion.bson = workspaceSettings.get<TagSuggestionConfig>('suggestion.bson') || defaultConfig.suggestion.bson

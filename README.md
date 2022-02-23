@@ -1,70 +1,126 @@
-# go-struct-tag-autocomplete README
+# VSCODE-GO-STRUCT-TAG-AUTOGEN
 
-This is the README for your extension "go-struct-tag-autocomplete". After writing up a brief description, we recommend including the following sections.
+Customizable Go struct tags autocomplete & generator
+
+<br/>
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+**Struct tag autocomplete**  
+Variable cases and options are customizable (see the config below)  
 
-For example if there is an image subfolder under your extension project workspace:
+TODO
 
-\!\[feature X\]\(images/feature-x.png\)
+Currently supported tags: `json` | `bson` | `binding`  
+Currently supported cases: `camel` | `snake`, `pascal`, `none`
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+TODO
 
-## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+**Generate struct tags command**  
+Generated tags are configurable (see the config below)  
 
-## Extension Settings
+TODO
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Can be activate by command palette, context menu, or shortcut (⌃ + ⇧ + T)
 
-For example:
+TODO
 
-This extension contributes the following settings:
+<br/>
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+## Config
+### **Autocomplete config**
+There are two types of tags — with and without variable name  
 
-## Known Issues
+**Tag with Variable Name (`json`, `bson`)**
+- **Config Key**  
+    `goStructTagAutogen.suggestion.json`  
+    `goStructTagAutogen.suggestion.bson`
+- **Config Object**  
+    |Key|Description|Type|Default|
+    |---|-----------|----|-------|
+    |enabled|Enable autocomplete for this tag|Boolean|`true`|
+    |case|Variable formatting for this tag|`camel`, `snake`, `pascal`, `none`|`camel`(json), `snake`(bson)|
+    |options|Options after variable name|String[]|*See below*
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+    > Any string can be put in the `options` array. The only special case is `-` (dash).  
+    > Instead of appending after variable name like `omitempty` ( `json:"field,omitempty"` ),it will replace the variable name ( `json:"-"` ).
+- **Default Value**
+    ```json
+    {
+        "goStructTagAutogen.suggestion.json": {
+            "enabled": true,
+            "case": "camel",
+            "options": [
+                "-",
+                "omitempty",
+                "required"
+            ]
+        },
+        "goStructTagAutogen.suggestion.bson": {
+            "enabled": true,
+            "case": "snake",
+            "options": [
+                "-",
+                "omitempty"
+            ]
+        }
+    }
+    ```
+    > The extension will fallback to the default above when no config provided or missing some fields in the config object.  
+    > eg. If only `goStructTagAutogen.suggestion.bson.options` is set in the config file, the default `case` (`snake`) will be used.
+
+<br/>
+
+#### **Tag without Variable Name (`binding`)**
+- **Config Key**  
+    `goStructTagAutogen.suggestion.binding`  
+- **Config Object**  
+    |Key|Description|Type|Default|
+    |---|-----------|----|-------|
+    |enabled|Enable autocomplete for this tag|Boolean|`true`|
+    |choices|Value choices|String[]|*See below*
+
+    > Any string can be put in the `choices` array. These texts will be put in the tag value.  
+    > `binding:"{choice}"` — eg. `binding:"required"`
+- **Default Value**
+    ```json
+    {
+        "goStructTagAutogen.suggestion.binding": {
+            "enabled": true,
+            "choices": [
+                "required"
+            ]
+        }
+    }
+    ```
+    > The extension will fallback to the default above when no config provided or missing some fields in the config object.
+
+<br/>
+
+### **Generate tags command config**
+- **Config key**  
+    `goStructTagAutogen.generation`  
+- **Config object**
+    |Key|Description|Type|Default|
+    |---|-----------|----|-------|
+    |tags|Struct tag template for the command|String|*See below*|
+    
+- **Default value**
+    ```json
+    {
+        "tags": "json:\"{{camel}}\" bson:\"{{snake}}\""
+    }
+    ```
+    > Double quote needed to be escaped (`\"`)
+- **Available Placeholders**
+    - `{{camel}}`  for the camel cased version of the field name
+    - `{{snake}}` for the snake cased version of the field name
+    - `{{pascal}}` for the pascal cased version of the field name
+    - `{{none}}` for the field name
+
+<br/>
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+TODO

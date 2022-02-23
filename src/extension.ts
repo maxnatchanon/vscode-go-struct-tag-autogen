@@ -19,7 +19,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	)
 
 	const generationDisposable = vscode.commands.registerTextEditorCommand(
-		'goStructTagAutoGen.generateStructTags',
+		'goStructTagAutogen.generateStructTags',
 		executeGenerateTagCommand,
 	)
 
