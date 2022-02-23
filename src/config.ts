@@ -1,16 +1,14 @@
 import * as vscode from 'vscode'
-import { Config, TagSuggestionConfig, TagSuggestionNonVariableConfig } from './types'
+import { Config, GenerationConfig, TagSuggestionConfig, TagSuggestionNonVariableConfig } from './types'
 import { defaultConfig } from './defaultConfig'
 
 let userConfig: Config = defaultConfig
 
 let workspaceSettings: vscode.WorkspaceConfiguration
 
-function init(context: vscode.ExtensionContext) {
+function init(): vscode.Disposable {
 	loadConfig()
-	context.subscriptions.push(
-		vscode.workspace.onDidChangeConfiguration(() => loadConfig())
-	)
+	return vscode.workspace.onDidChangeConfiguration(() => loadConfig())
 }
 
 function loadConfig() {
@@ -19,6 +17,8 @@ function loadConfig() {
 	userConfig.suggestion.json = workspaceSettings.get<TagSuggestionConfig>('suggestion.json') || defaultConfig.suggestion.json
 	userConfig.suggestion.bson = workspaceSettings.get<TagSuggestionConfig>('suggestion.bson') || defaultConfig.suggestion.bson
 	userConfig.suggestion.binding = workspaceSettings.get<TagSuggestionNonVariableConfig>('suggestion.binding') || defaultConfig.suggestion.binding
+
+	userConfig.generation = workspaceSettings.get<GenerationConfig>('generation') || defaultConfig.generation
 }
 
 function getSuggestionConfig(tag: string): (TagSuggestionConfig | undefined) {
@@ -39,8 +39,13 @@ function getNonVariableSuggestionConfig(tag: string): (TagSuggestionNonVariableC
 	return undefined
 }
 
+function getGenerationConfig(): GenerationConfig {
+	return userConfig.generation
+}
+
 export default {
 	init,
 	getSuggestionConfig,
 	getNonVariableSuggestionConfig,
+	getGenerationConfig,
 }

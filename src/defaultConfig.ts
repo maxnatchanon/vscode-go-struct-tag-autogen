@@ -16,5 +16,9 @@ export const defaultConfig: Config = {
             enabled: true,
             choices: ["required"]
         }
+    },
+    generation: {
+        enabled: true,
+        tags: "json:\"{{camel}}\" bson:\"{{snake}}\""
     }
 }

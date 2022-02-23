@@ -1,17 +1,17 @@
 import * as vscode from 'vscode'
 import config from './config'
 import { formatField } from './formatter'
-
-const supportedTags = ['json', 'bson', 'binding']
+import { executeGenerateTagCommand } from './generation'
+import { supportedTags } from './constant'
 
 export async function activate(context: vscode.ExtensionContext) {
-	config.init(context)
+	const configDisposable = config.init()
 	
-	const provider = vscode.languages.registerCompletionItemProvider(
+	const suggestionDisposable = vscode.languages.registerCompletionItemProvider(
 		'go',
 		{
 			provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext): vscode.CompletionItem[] {
-				const line = document.lineAt(position).text.substr(0, position.character);
+				const line = document.lineAt(position).text.slice(0, position.character);
 
 				let field: string
 				let partialTag: string
@@ -38,7 +38,12 @@ export async function activate(context: vscode.ExtensionContext) {
 		...(new Set(supportedTags.join('').split('')))
 	)
 
-	context.subscriptions.push(provider)
+	const generationDisposable = vscode.commands.registerTextEditorCommand(
+		'goStructTagAutoGen.generateStructTags',
+		executeGenerateTagCommand,
+	)
+
+	context.subscriptions.push(...[configDisposable, suggestionDisposable, generationDisposable])
 }
 
 function getFieldAndTag(text: string): { field: string, partialTag: string } {
@@ -53,6 +58,8 @@ function getFieldAndTag(text: string): { field: string, partialTag: string } {
 		partialTag: tagList[tagList.length - 1],
 	}
 }
+
+
 
 function getMatchedTags(partialTag: string): string[] {
 	let matched: string[] = []
