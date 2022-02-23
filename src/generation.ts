@@ -3,7 +3,7 @@ import config from "./config"
 import { formatField } from './formatter'
 import { supportedCases } from './constant'
 
-export function executeGenerateTagCommand(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit, ...args: any[]) {
+export function executeGenerateTagCommand(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
     const document = textEditor.document
     for (let selection of textEditor.selections) {
         const start = selection.start.line

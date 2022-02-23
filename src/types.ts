@@ -24,6 +24,5 @@ export type TagSuggestionNonVariableConfig = {
 }
 
 export type GenerationConfig = {
-	enabled: boolean
 	tags: string
 }

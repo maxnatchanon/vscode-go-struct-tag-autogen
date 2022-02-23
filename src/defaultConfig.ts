@@ -18,7 +18,6 @@ export const defaultConfig: Config = {
         }
     },
     generation: {
-        enabled: true,
         tags: "json:\"{{camel}}\" bson:\"{{snake}}\""
     }
 }
