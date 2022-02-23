@@ -14,7 +14,7 @@ export type SuggestionConfig = {
 
 export type TagSuggestionConfig = {
 	enabled: boolean
-	case: Case
+	cases: Case[]
 	options: string[]
 }
 

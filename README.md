@@ -1,6 +1,6 @@
 # VSCODE-GO-STRUCT-TAG-AUTOGEN
 
-Customizable Go struct tags autocomplete & generator
+## Customizable Go struct tags autocomplete & generator
 
 <br/>
 
@@ -28,6 +28,18 @@ TODO
 
 <br/>
 
+## Note
+If the autocomplete suggestion doesn't work, try adding this config in your `settings.json`  
+Open `Command Palette` (⌘ + ⇧ + P) then `Preferences: Open Settings (JSON)`
+
+```json
+"editor.quickSuggestions": {
+    "strings": true
+}
+```
+
+<br/>
+
 ## Config
 ### **Autocomplete config**
 There are two types of tags — with and without variable name  
@@ -40,31 +52,25 @@ There are two types of tags — with and without variable name
     |Key|Description|Type|Default|
     |---|-----------|----|-------|
     |enabled|Enable autocomplete for this tag|Boolean|`true`|
-    |case|Variable formatting for this tag|`camel`, `snake`, `pascal`, `none`|`camel`(json), `snake`(bson)|
+    |cases|Variable formatting for this tag|Case[]|["`camel`"] (json), ["`snake`"] (bson)|
     |options|Options after variable name|String[]|*See below*
+
+    > Supported cases: `camel`, `snake`, `pascal`, `none`  
+    > When multiple cases are set, every combinations of cases and options will appear in the autocomplete suggestion.
 
     > Any string can be put in the `options` array. The only special case is `-` (dash).  
     > Instead of appending after variable name like `omitempty` ( `json:"field,omitempty"` ),it will replace the variable name ( `json:"-"` ).
 - **Default Value**
     ```json
-    {
-        "goStructTagAutogen.suggestion.json": {
-            "enabled": true,
-            "case": "camel",
-            "options": [
-                "-",
-                "omitempty",
-                "required"
-            ]
-        },
-        "goStructTagAutogen.suggestion.bson": {
-            "enabled": true,
-            "case": "snake",
-            "options": [
-                "-",
-                "omitempty"
-            ]
-        }
+    "goStructTagAutogen.suggestion.json": {
+        "enabled": true,
+        "cases": ["camel"],
+        "options": ["-", "omitempty"]
+    },
+    "goStructTagAutogen.suggestion.bson": {
+        "enabled": true,
+        "cases": ["snake"],
+        "options": ["-", "omitempty"]
     }
     ```
     > The extension will fallback to the default above when no config provided or missing some fields in the config object.  
@@ -82,16 +88,12 @@ There are two types of tags — with and without variable name
     |choices|Value choices|String[]|*See below*
 
     > Any string can be put in the `choices` array. These texts will be put in the tag value.  
-    > `binding:"{choice}"` — eg. `binding:"required"`
+    > `binding:"{{choice}}"` — eg. `binding:"required"`
 - **Default Value**
     ```json
-    {
-        "goStructTagAutogen.suggestion.binding": {
-            "enabled": true,
-            "choices": [
-                "required"
-            ]
-        }
+    "goStructTagAutogen.suggestion.binding": {
+        "enabled": true,
+        "choices": ["required"]
     }
     ```
     > The extension will fallback to the default above when no config provided or missing some fields in the config object.
@@ -108,7 +110,7 @@ There are two types of tags — with and without variable name
     
 - **Default value**
     ```json
-    {
+    "goStructTagAutogen.generation": {
         "tags": "json:\"{{camel}}\" bson:\"{{snake}}\""
     }
     ```
@@ -118,6 +120,18 @@ There are two types of tags — with and without variable name
     - `{{snake}}` for the snake cased version of the field name
     - `{{pascal}}` for the pascal cased version of the field name
     - `{{none}}` for the field name
+- **Example**
+    ```go
+    Config:
+    {
+        "tags": "json:\"{{camel}},omitempty\" bson:\"{{snake}}\" binding:\"required,gte=10\""
+    }
+
+    Generated tags:
+    {
+        TotalAmount int `json:"totalAmount,omitempty" bson:"total_amount" binding:"required,gte=10"`
+    }
+    ```
 
 <br/>
 

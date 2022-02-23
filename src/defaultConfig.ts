@@ -4,12 +4,12 @@ export const defaultConfig: Config = {
     suggestion: {
         json: {
             enabled: true,
-            case: "camel",
+            cases: ["camel"],
             options: ["-", "omitempty"]
         },
         bson: {
             enabled: true,
-            case: "snake",
+            cases: ["snake"],
             options: ["-", "omitempty"]
         },
         binding: {

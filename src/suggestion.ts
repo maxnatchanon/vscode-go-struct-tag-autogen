@@ -68,16 +68,18 @@ function getCompletion(field: string, tag: string): vscode.CompletionItem[] {
 		return []
 	}
 
-	const formattedField = formatField(field, cfg.case)
+	const formattedFields = cfg.cases.map((c) => formatField(field, c))
 	
 	var completions: vscode.CompletionItem[] = []
-	completions.push(new vscode.CompletionItem(`${tag}:"${formattedField}"`, vscode.CompletionItemKind.Text))
-	for (let option of cfg.options) {
-		if (option === '-') {
-			completions.push(new vscode.CompletionItem(`${tag}:"-"`, vscode.CompletionItemKind.Text))
-			continue
+	for (let formattedField of formattedFields) {
+		completions.push(new vscode.CompletionItem(`${tag}:"${formattedField}"`, vscode.CompletionItemKind.Text))
+		for (let option of cfg.options) {
+			if (option === '-') {
+				completions.push(new vscode.CompletionItem(`${tag}:"-"`, vscode.CompletionItemKind.Text))
+				continue
+			}
+			completions.push(new vscode.CompletionItem(`${tag}:"${formattedField},${option}"`, vscode.CompletionItemKind.Text))
 		}
-		completions.push(new vscode.CompletionItem(`${tag}:"${formattedField},${option}"`, vscode.CompletionItemKind.Text))
 	}
 	return completions
 }

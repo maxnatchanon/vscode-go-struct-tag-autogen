@@ -41,8 +41,8 @@
 					"type": "object",
 					"default": {
 						"enabled": true,
-						"case": "camel",
-						"options": ["-", "omitempty", "required"]
+						"cases": ["camel"],
+						"options": ["-", "omitempty"]
 					},
 					"description": "Go struct tag suggestion config for `json` tag"
 				},
@@ -50,7 +50,7 @@
 					"type": "object",
 					"default": {
 						"enabled": true,
-						"case": "snake",
+						"cases": ["snake"],
 						"options": ["-", "omitempty"]
 					},
 					"description": "Go struct tag suggestion config for `bson` tag"
