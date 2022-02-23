@@ -1,7 +1,7 @@
 {
-	"name": "go-struct-tag-autocomplete",
-	"displayName": "Go Struct Tag Autocomplete",
-	"description": "Customizable Go struct tag autocomplete",
+	"name": "go-struct-tag-autogen",
+	"displayName": "Go Struct Tag Autocomplete & Generator",
+	"description": "Customizable Go struct tag autocomplete & generator",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.50.0"
@@ -10,16 +10,41 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:go-struct-tag-autocomplete.helloWorld"
+		"onLanguage:go"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
-			{
-				"command": "go-struct-tag-autocomplete.helloWorld",
-				"title": "Hello World"
+		"configuration": {
+			"title": "Go Struct Tag Autocomplete & Generator",
+			"properties": {
+				"goStructTagAutoGen.suggestion.json": {
+					"type": "object",
+					"default": {
+						"enabled": true,
+						"case": "camel",
+						"options": ["-", "omitempty", "required"]
+					},
+					"description": "Go struct tag suggestion config for `json` tag"
+				},
+				"goStructTagAutoGen.suggestion.bson": {
+					"type": "object",
+					"default": {
+						"enabled": true,
+						"case": "snake",
+						"options": ["-", "omitempty"]
+					},
+					"description": "Go struct tag suggestion config for `bson` tag"
+				},
+				"goStructTagAutoGen.suggestion.binding": {
+					"type": "object",
+					"default": {
+						"enabled": true,
+						"choices": ["required"]
+					},
+					"description": "Go struct tag suggestion config for `binding` tag"
+				}
 			}
-		]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
