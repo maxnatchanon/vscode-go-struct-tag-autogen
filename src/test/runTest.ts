@@ -2,6 +2,19 @@ import * as path from 'path';
 
 import { runTests } from '@vscode/test-electron';
 
+/*
+. 　　　。　　　　•　 　ﾟ　　。 　　.
+
+　　　.　　　 　　.　　　　　。　　 。　. 　
+
+.　　 。　　　　　 ඞ 。 . 　　 • 　　　　•
+
+　　ﾟ　　	 Test was ejected 	.　 。　.
+
+　　'　　　 . 	　	 . 		　　ﾟ  　 。
+
+　　ﾟ　　　.　　　. ,　　　　.　 .
+*/
 async function main() {
 	try {
 		// The folder containing the Extension Manifest package.json

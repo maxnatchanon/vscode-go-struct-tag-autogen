@@ -1,26 +1,71 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from 'vscode'
+import config from './config'
+import { executeGenerateTagCommand } from './generation'
+import { supportedTags } from './constant'
+import { getTagSuggestions } from './tagSuggestion'
+import { getValueSuggestions } from './valueSuggestion'
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-	
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "go-struct-tag-autocomplete" is now active!');
+let configDisposable: vscode.Disposable
+let tagSuggestionDisposable: vscode.Disposable
+let valueSuggestionDisposable: vscode.Disposable
+let generationDisposable: vscode.Disposable
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('go-struct-tag-autocomplete.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Go Struct Tag Autocomplete!');
-	});
+export async function activate(context: vscode.ExtensionContext) {
+	configDisposable = config.init()
+	tagSuggestionDisposable = registerTagSuggestion()
+	valueSuggestionDisposable = registerValueSuggestion()
+	generationDisposable = registerGenerationCommand()
 
-	context.subscriptions.push(disposable);
+	config.onValueSuggestionConfigChange(() => {
+		valueSuggestionDisposable.dispose()
+		valueSuggestionDisposable = registerValueSuggestion()
+	})
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate(context: vscode.ExtensionContext) {
+	configDisposable.dispose()
+	tagSuggestionDisposable.dispose()
+	valueSuggestionDisposable.dispose()
+	generationDisposable.dispose()
+}
+
+function registerTagSuggestion(): vscode.Disposable {
+	const chars = supportedTags.join('').split('')
+	return vscode.languages.registerCompletionItemProvider(
+		'go',
+		{
+			provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
+				const text = document.lineAt(position).text.slice(0, position.character)
+				return getTagSuggestions(text)
+			}
+		},
+		...(new Set(chars))
+	)
+}
+
+function registerValueSuggestion(): vscode.Disposable {
+	const cfg = config.getValueSuggestionConfig()
+	let chars: string[] = []
+	for (let key of Object.keys(cfg)) {
+		chars.push(...cfg[key])
+	}
+	chars.push(',', '"')
+	chars = chars.join('').split('')
+	return vscode.languages.registerCompletionItemProvider(
+		'go',
+		{
+			provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): vscode.CompletionItem[] {
+				const text = document.lineAt(position).text.slice(0, position.character)
+				return getValueSuggestions(text)
+			}
+		},
+		...(new Set(chars))
+	)
+}
+
+function registerGenerationCommand(): vscode.Disposable {
+	return vscode.commands.registerTextEditorCommand(
+		'goStructTagAutogen.generateStructTags',
+		executeGenerateTagCommand,
+	)
+}
