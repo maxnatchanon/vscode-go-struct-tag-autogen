@@ -51,7 +51,7 @@ function getFieldLines(start: number, end: number, document: vscode.TextDocument
 	res = res.filter((line) => {
 		const text = document.lineAt(line).text
 		const field = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_][a-zA-Z_\d]*/
-		return field.exec(text) !== null
+		return field.exec(text) !== null && !text.includes('`')
 	})
 	return res
 }
