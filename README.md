@@ -10,23 +10,23 @@ Variable cases and options are customizable ([view config](#tag-autocomplete-con
 Currently supported tags: `json` | `bson` | `binding`  
 Currently supported cases: `camel` | `snake` | `pascal` | `none`
 
-![Tag Suggestion Preview 1](assets/gif/tag-suggestion-0.gif)
+![Tag Suggestion Preview 1](https://raw.githubusercontent.com/maxnatchanon/vscode-go-struct-tag-autogen/main/assets/gif/tag-suggestion-0.gif)
 
 **Struct tag value autocomplete**  
 Suggestion list for each tag can be configured ([view config](#tag-value-autocomplete-config))  
 Any tag can be added for value suggestion (doesn't need to be supported by tag autocomplete above)
 
-![Tag Value Suggestion Preview 1](assets/gif/value-suggestion-0.gif)
+![Tag Value Suggestion Preview 1](https://raw.githubusercontent.com/maxnatchanon/vscode-go-struct-tag-autogen/main/assets/gif/value-suggestion-0.gif)
 
 
 **Generate struct tags command**  
 Generated tags are configurable ([view config](#generate-tags-command-config))  
 Can be activated by command palette, context menu, or shortcut (⌃ + ⇧ + T)  
 
-![Generate Struct Tag Preview 1](assets/gif/generate-0.gif)
+![Generate Struct Tag Preview 1](https://raw.githubusercontent.com/maxnatchanon/vscode-go-struct-tag-autogen/main/assets/gif/generate-0.gif)
 
 Multiple cursors support  
-![Generate Struct Tag Preview 2](assets/gif/generate-1.gif)
+![Generate Struct Tag Preview 2](https://raw.githubusercontent.com/maxnatchanon/vscode-go-struct-tag-autogen/main/assets/gif/generate-1.gif)
 
 ## Note
 If the autocomplete suggestion doesn't work, try adding this config in your `settings.json`  
@@ -157,8 +157,8 @@ There are two types of tags — with and without variable name
 
 ## Release Notes
 
-TODO
+[CHANGELOG.md](https://github.com/maxnatchanon/vscode-go-struct-tag-autogen/blob/main/CHANGELOG.md)
 
 ## Contibuting
 
-If you want to add new tags, new cases, or new features, you can follow the guide in [CONTRIBUTING.md](CONTRIBUTING.md).
+If you want to add new tags, new cases, or new features, you can follow the guide in [CONTRIBUTING.md](https://github.com/maxnatchanon/vscode-go-struct-tag-autogen/blob/main/CONTRIBUTING.md).
