@@ -2,7 +2,7 @@
 	"name": "go-struct-tag-autogen",
 	"displayName": "Go Struct Tag Autocomplete & Generator",
 	"description": "Customizable Go struct tag autocomplete & generator",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"publisher": "maxnatchanon",
     "author": {
         "name": "Natchanon A."

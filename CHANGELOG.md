@@ -1,9 +1,11 @@
 # Change Log
 
-All notable changes to the "go-struct-tag-autocomplete" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
+## 1.0.0 - 25-02-22
 
 - Initial release
+- Supported tags: json, bson, binding
+- Supported cases: camel, snake, pascal, none
+- Features
+    - Tag suggestion
+    - Tag value suggstion
+    - Generate tags command
