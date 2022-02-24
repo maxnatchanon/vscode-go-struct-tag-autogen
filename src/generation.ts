@@ -12,8 +12,10 @@ export function executeGenerateTagCommand(textEditor: vscode.TextEditor, edit: v
             const fieldLines = getFieldLines(start, end, document)
             for (let line of fieldLines) {
                 const field = getField(document.lineAt(line).text)
-                const tags = generateTags(field)
-                edit.insert(new vscode.Position(line, document.lineAt(line).range.end.character), ` \`${tags}\``)
+				if (field) {
+					const tags = generateTags(field)
+					edit.insert(new vscode.Position(line, document.lineAt(line).range.end.character), ` \`${tags}\``)
+				}
             }
         } catch (err: any) {
             vscode.window.showErrorMessage(`${err.toString()} (line ${start + 1})`)
@@ -21,11 +23,11 @@ export function executeGenerateTagCommand(textEditor: vscode.TextEditor, edit: v
     }
 }
 
-function getField(text: string): string {
-	const field = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_][a-zA-Z_\d]*/
+function getField(text: string): (string | null) {
+	const field = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_\[\]]*/
 	const list = field.exec(text)
 	if (!list) {
-		throw new Error('not matched')
+		return null
 	}
 	return list[1]
 }
@@ -50,14 +52,14 @@ function getFieldLines(start: number, end: number, document: vscode.TextDocument
 
 	res = res.filter((line) => {
 		const text = document.lineAt(line).text
-		const field = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_][a-zA-Z_\d]*/
+		const field = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_\[\]]*/
 		return field.exec(text) !== null && !text.includes('`')
 	})
 	return res
 }
 
 function getStructScope(line: number, document: vscode.TextDocument): { start: number, end: number } {
-	const head = /type\s+\w\s+struct\s+{/
+	const head = /type\s+\w+\s+struct\s+{/
 	const tail = /}/
 
 	let headLine = -1
@@ -67,7 +69,7 @@ function getStructScope(line: number, document: vscode.TextDocument): { start: n
 			headLine = l
 			break
 		}
-		if (tail.exec(document.lineAt(l).text)) {
+		if (l < line && tail.exec(document.lineAt(l).text)) {
 			throw new Error('outside struct')
 		}
 	}
@@ -76,7 +78,7 @@ function getStructScope(line: number, document: vscode.TextDocument): { start: n
 			tailLine = l
 			break
 		}
-		if (head.exec(document.lineAt(l).text)) {
+		if (l > line && head.exec(document.lineAt(l).text)) {
 			throw new Error('outside struct')
 		}
 	}
