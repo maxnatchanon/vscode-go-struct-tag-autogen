@@ -32,6 +32,9 @@ function getFieldAndTag(text: string): { field: string, partialTag: string } {
 	if (!list) {
 		throw new Error('not matched')
 	}
+	if ((text.split('`').length - 1) % 2 === 0) {
+		throw new Error('not in tag')
+	}
 	const tagList = list[2].split(/\s/)
 	return {
 		field: list[1],
