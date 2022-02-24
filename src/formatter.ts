@@ -16,11 +16,12 @@ export function formatField(field: string, format: Case): string {
 }
 
 function splitWords(field: string): string[] {
-    return field
-        .replace(/([A-Z][a-z])/g, '!!!$&')
-        .replace(/([A-Z]{2,})/g, '!!!$&')
-        .replace(/^!!!/, '')
-        .split('!!!')
+    let words = field.replace(/([A-Z][a-z])/g, '!!!$&').split('!!!')
+    if (words.length >= 2 && /^[A-Z]s$/.exec(words[words.length - 1])) {
+        words = [...words.slice(0, words.length - 2), words.slice(words.length - 2, words.length).join('')]
+    }
+    words = words.join('!!!').replace(/([A-Z]{2,})/g, '!!!$&').replace(/^!!!/, '').split('!!!')
+    return words
 }
 
 function formatCamel(field: string): string {
