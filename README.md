@@ -7,28 +7,26 @@
 **Struct tag autocomplete**  
 Variable cases and options are customizable ([view config](#tag-autocomplete-config))  
 
-TODO
-
 Currently supported tags: `json` | `bson` | `binding`  
-Currently supported cases: `camel` | `snake`, `pascal`, `none`
+Currently supported cases: `camel` | `snake` | `pascal` | `none`
 
-TODO
+![Tag Suggestion Preview 1](assets/gif/tag-suggestion-0.gif)
 
 **Struct tag value autocomplete**  
 Suggestion list for each tag can be configured ([view config](#tag-value-autocomplete-config))  
 Any tag can be added for value suggestion (doesn't need to be supported by tag autocomplete above)
 
-TODO
+![Tag Value Suggestion Preview 1](assets/gif/value-suggestion-0.gif)
 
 
 **Generate struct tags command**  
 Generated tags are configurable ([view config](#generate-tags-command-config))  
+Can be activated by command palette, context menu, or shortcut (⌃ + ⇧ + T)  
 
-TODO
+![Generate Struct Tag Preview 1](assets/gif/generate-0.gif)
 
-Can be activated by command palette, context menu, or shortcut (⌃ + ⇧ + T)
-
-TODO
+Multiple cursors support  
+![Generate Struct Tag Preview 2](assets/gif/generate-1.gif)
 
 ## Note
 If the autocomplete suggestion doesn't work, try adding this config in your `settings.json`  
@@ -51,8 +49,8 @@ There are two types of tags — with and without variable name
 - **Config Object**  
     |Key|Description|Type|Default|
     |---|-----------|----|-------|
-    |enabled|Enable autocomplete for this tag|Boolean|`true`|
-    |cases|Variable formatting for this tag|Case[]|["`camel`"] (json), ["`snake`"] (bson)|
+    |enabled|Enable autocomplete for this tag|Boolean|true|
+    |cases|Variable formatting for this tag|Case[]|["camel"] (json), ["snake"] (bson)|
     |options|Options after variable name|String[]|*See below*
 
     Supported cases: `camel`, `snake`, `pascal`, `none`  
@@ -82,7 +80,7 @@ There are two types of tags — with and without variable name
 - **Config Object**  
     |Key|Description|Type|Default|
     |---|-----------|----|-------|
-    |enabled|Enable autocomplete for this tag|Boolean|`true`|
+    |enabled|Enable autocomplete for this tag|Boolean|true|
     |choices|Value choices|String[]|*See below*
 
     Any string can be put in the `choices` array. These texts will be put in the tag value.  
@@ -163,4 +161,4 @@ TODO
 
 ## Contibuting
 
-If you want to add new tags, new cases, or new features, you can follow the guide in [CONTRIBUTING.md](CONTRIBUTING.md)
+If you want to add new tags, new cases, or new features, you can follow the guide in [CONTRIBUTING.md](CONTRIBUTING.md).

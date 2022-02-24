@@ -3,10 +3,22 @@
 	"displayName": "Go Struct Tag Autocomplete & Generator",
 	"description": "Customizable Go struct tag autocomplete & generator",
 	"version": "0.0.1",
+	"publisher": "maxnatchanon",
+    "author": {
+        "name": "Natchanon A."
+    },
+	"icon": "assets/icon.png",
 	"engines": {
-		"vscode": "^1.50.0"
+		"vscode": "^1.64.0"
 	},
+	"license": "MIT",
+	"repository": {
+        "url": "https://github.com/maxnatchanon/vscode-go-struct-tag-autogen",
+        "type": "git"
+    },
 	"categories": [
+		"Programming Languages",
+		"Extension Packs",
 		"Other"
 	],
 	"activationEvents": [
