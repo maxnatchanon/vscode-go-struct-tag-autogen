@@ -7,7 +7,7 @@
 **Struct tag autocomplete**  
 Variable cases and options are customizable ([view config](#tag-autocomplete-config))  
 
-Currently supported tags: `json` | `bson` | `binding`  
+Currently supported tags: `json` | `bson` | `form` | `binding`  
 Currently supported cases: `camel` | `snake` | `pascal` | `none`
 
 ![Tag Suggestion Preview 1](https://raw.githubusercontent.com/maxnatchanon/vscode-go-struct-tag-autogen/main/assets/gif/tag-suggestion-0.gif)
@@ -42,16 +42,17 @@ Open `Command Palette` (⌘ + ⇧ + P) then `Preferences: Open Settings (JSON)`
 ### **Tag Autocomplete Config**
 There are two types of tags — with and without variable name  
 
-**Tag with Variable Name (`json`, `bson`)**
+**Tag with Variable Name (`json`, `bson`, `form`)**
 - **Config Key**  
     `goStructTagAutogen.suggestion.json`  
-    `goStructTagAutogen.suggestion.bson`
+    `goStructTagAutogen.suggestion.bson`  
+    `goStructTagAutogen.suggestion.form`  
 - **Config Object**  
     |Key|Description|Type|Default|
     |---|-----------|----|-------|
     |enabled|Enable autocomplete for this tag|Boolean|true|
-    |cases|Variable formatting for this tag|Case[]|["camel"] (json), ["snake"] (bson)|
-    |options|Options after variable name|String[]|*See below*
+    |cases|Variable formatting for this tag|Case[]|*See below*|
+    |options|Options after variable name|String[]|*See below*|
 
     Supported cases: `camel`, `snake`, `pascal`, `none`  
     When multiple cases are set, every combinations of cases and options will appear in the autocomplete suggestion.
@@ -70,6 +71,11 @@ There are two types of tags — with and without variable name
         "cases": ["snake"],
         "options": ["-", "omitempty"]
     }
+    "goStructTagAutogen.tagSuggestion.form": {
+        "enabled": true,
+        "cases": ["camel"],
+        "options": ["-", "omitempty"]
+    }
     ```
     The extension will fallback to the default above when no config provided or missing some fields in the config object.  
     eg. If only `goStructTagAutogen.tagSuggestion.bson.options` is set in the config file, the default `case` (`snake`) will be used.
@@ -81,7 +87,7 @@ There are two types of tags — with and without variable name
     |Key|Description|Type|Default|
     |---|-----------|----|-------|
     |enabled|Enable autocomplete for this tag|Boolean|true|
-    |choices|Value choices|String[]|*See below*
+    |choices|Value choices|String[]|*See below*|
 
     Any string can be put in the `choices` array. These texts will be put in the tag value.  
     `binding:"{{choice}}"` — eg. `binding:"required"`
