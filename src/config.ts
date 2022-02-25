@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
-import { Config, GenerationConfig, TagSuggestionWithVariableConfig, TagSuggestionNonVariableConfig, ValueSuggestionConfig } from './types'
+import { Config, GenerationConfig, TagSuggestionWithVariableConfig, TagSuggestionNonVariableConfig, ValueSuggestionConfig, Tag } from './types'
 import { defaultConfig } from './defaultConfig'
+import { supportedNonVariableTags, supportedVariableTags } from './constants'
 
 let currentConfig: Config = defaultConfig
 
@@ -35,24 +36,14 @@ function onValueSuggestionConfigChange(callback: () => void) {
 	valueSuggestionChangeCallback = callback
 }
 
-function getTagSuggestionConfig(tag: string): (TagSuggestionWithVariableConfig | undefined) {
-	switch (tag) {
-		case 'json':
-			return currentConfig.tagSuggestion.json
-		case 'bson':
-			return currentConfig.tagSuggestion.bson
-		case 'form':
-			return currentConfig.tagSuggestion.form
-	}
-	return undefined
+function getTagSuggestionConfig(tag: Tag): (TagSuggestionWithVariableConfig | undefined) {
+	if (!supportedVariableTags.includes(tag)) return undefined
+	return currentConfig.tagSuggestion[tag] as TagSuggestionWithVariableConfig
 }
 
-function getNonVariableTagSuggestionConfig(tag: string): (TagSuggestionNonVariableConfig | undefined) {
-	switch (tag) {
-		case 'binding':
-			return currentConfig.tagSuggestion.binding
-	}
-	return undefined
+function getNonVariableTagSuggestionConfig(tag: Tag): (TagSuggestionNonVariableConfig | undefined) {
+	if (!supportedNonVariableTags.includes(tag)) return undefined
+	return currentConfig.tagSuggestion[tag] as TagSuggestionNonVariableConfig
 }
 
 function getValueSuggestionConfig(): (ValueSuggestionConfig) {
