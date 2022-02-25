@@ -2,7 +2,20 @@
 	"name": "go-struct-tag-autogen",
 	"displayName": "Go Struct Tag Autocomplete & Generator",
 	"description": "Customizable Go struct tag autocomplete & generator",
-	"version": "1.0.0",
+	"keywords": [
+		"go",
+		"golang",
+		"struct",
+		"tag",
+		"auto",
+		"complete",
+		"autocomplete",
+		"suggestion",
+		"generate",
+		"json",
+		"bson"
+	],
+	"version": "1.0.1",
 	"publisher": "maxnatchanon",
     "author": {
         "name": "Natchanon A."
@@ -66,6 +79,15 @@
 						"options": ["-", "omitempty"]
 					},
 					"description": "Go struct tag suggestion config for `bson` tag"
+				},
+				"goStructTagAutogen.tagSuggestion.form": {
+					"type": "object",
+					"default":{
+						"enabled": true,
+						"cases": ["camel"],
+						"options": ["-", "omitempty"]
+					},
+					"description": "Go struct tag suggestion config for `form` tag"
 				},
 				"goStructTagAutogen.tagSuggestion.binding": {
 					"type": "object",

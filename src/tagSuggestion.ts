@@ -1,7 +1,8 @@
 import * as vscode from 'vscode'
 import config from './config'
 import { formatField } from './formatter'
-import { supportedTags } from './constant'
+import { supportedNonVariableTags, supportedTags, supportedVariableTags } from './constants'
+import { Tag } from './types'
 
 export function getTagSuggestions(text: string): vscode.CompletionItem[] {
     let field: string
@@ -27,7 +28,7 @@ export function getTagSuggestions(text: string): vscode.CompletionItem[] {
 }
 
 function getFieldAndTag(text: string): { field: string, partialTag: string } {
-	const regex = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_][a-zA-Z_\d]*\s+`(.*)/
+	const regex = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_][a-zA-Z_\d\.]*\s+`(.*)/
 	const list = regex.exec(text)
 	if (!list) {
 		throw new Error('not matched')
@@ -44,8 +45,8 @@ function getFieldAndTag(text: string): { field: string, partialTag: string } {
 
 
 
-function getMatchedTags(partialTag: string): string[] {
-	let matched: string[] = []
+function getMatchedTags(partialTag: string): Tag[] {
+	let matched: Tag[] = []
 	for (let tag of supportedTags) {
 		if (!tag.startsWith(partialTag)) continue
 		matched.push(tag)
@@ -53,19 +54,18 @@ function getMatchedTags(partialTag: string): string[] {
 	return matched
 }
 
-function generateCompletionItems(tag: string, field: string): vscode.CompletionItem[] {
-	switch (tag) {
-		case 'json':
-		case 'bson':
-			return getCompletion(field, tag)
-		case 'binding':
-			return getNonVariableCompletion(tag)
-		default:
-			return []
+function generateCompletionItems(tag: Tag, field: string): vscode.CompletionItem[] {
+
+	if (supportedVariableTags.includes(tag)) {
+		return getVariableCompletion(field, tag)
 	}
+	if (supportedNonVariableTags.includes(tag)) {
+		return getNonVariableCompletion(tag)
+	}
+	return []
 }
 
-function getCompletion(field: string, tag: string): vscode.CompletionItem[] {
+function getVariableCompletion(field: string, tag: Tag): vscode.CompletionItem[] {
 	const cfg = config.getTagSuggestionConfig(tag)
 	if (!cfg) {
 		return []
@@ -87,7 +87,7 @@ function getCompletion(field: string, tag: string): vscode.CompletionItem[] {
 	return completions
 }
 
-function getNonVariableCompletion(tag: string): vscode.CompletionItem[] {
+function getNonVariableCompletion(tag: Tag): vscode.CompletionItem[] {
 	const cfg = config.getNonVariableTagSuggestionConfig(tag)
 	if (!cfg) {
 		return []
