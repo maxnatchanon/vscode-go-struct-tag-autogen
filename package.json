@@ -67,6 +67,15 @@
 					},
 					"description": "Go struct tag suggestion config for `bson` tag"
 				},
+				"goStructTagAutogen.tagSuggestion.form": {
+					"type": "object",
+					"default":{
+						"enabled": true,
+						"cases": ["camel"],
+						"options": ["-", "omitempty"]
+					},
+					"description": "Go struct tag suggestion config for `form` tag"
+				},
 				"goStructTagAutogen.tagSuggestion.binding": {
 					"type": "object",
 					"default": {

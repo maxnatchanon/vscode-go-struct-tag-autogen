@@ -1,4 +1,4 @@
-export type Tag = 'json' | 'bson' | 'binding'
+export type Tag = 'json' | 'bson' | 'form' | 'binding'
 export type Case = 'none' | 'camel' | 'snake' | 'pascal'
 
 export type Config = {
@@ -10,6 +10,7 @@ export type Config = {
 export type TagSuggestionConfig = {
 	json: TagSuggestionWithVariableConfig
 	bson: TagSuggestionWithVariableConfig
+	form: TagSuggestionWithVariableConfig
 	binding: TagSuggestionNonVariableConfig
 }
 
