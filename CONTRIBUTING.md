@@ -18,8 +18,6 @@ But feel free to make other changes / add other features as you like.
 3. Also add default config for the new tag in [`package.json`](package.json)
 - Follow config key format `goStructTagAutogen.suggestion.TAG_NAME`
 - Use non-variable tag type for tags that don't need variable name
-4. Add the new tag in the switch case of `generateCompletionItems()` in [`tagSuggestion.ts`](src/tagSuggestion.ts)
-5. Also add case in the switch case of `getTagSuggestionConfig()` in [`config.ts`](src/config.ts)
 ### Adding New Case Formatting
 1. Add the new case name in [`constant.ts`](src/constants.ts) and [`types.ts`](src/types.ts)
 2. Also add the new case name in the config object in [`types.ts`](src/types.ts)
