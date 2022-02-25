@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import config from './config'
 import { formatField } from './formatter'
-import { supportedTags } from './constant'
+import { supportedTags } from './constants'
 
 export function getTagSuggestions(text: string): vscode.CompletionItem[] {
     let field: string
@@ -57,6 +57,7 @@ function generateCompletionItems(tag: string, field: string): vscode.CompletionI
 	switch (tag) {
 		case 'json':
 		case 'bson':
+		case 'form':
 			return getCompletion(field, tag)
 		case 'binding':
 			return getNonVariableCompletion(tag)

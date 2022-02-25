@@ -12,6 +12,11 @@ export const defaultConfig: Config = {
             cases: ["snake"],
             options: ["-", "omitempty"]
         },
+        form: {
+            enabled: true,
+            cases: ["camel"],
+            options: ["-", "omitempty"]
+        },
         binding: {
             enabled: true,
             choices: ["required"]

@@ -41,6 +41,8 @@ function getTagSuggestionConfig(tag: string): (TagSuggestionWithVariableConfig |
 			return currentConfig.tagSuggestion.json
 		case 'bson':
 			return currentConfig.tagSuggestion.bson
+		case 'form':
+			return currentConfig.tagSuggestion.form
 	}
 	return undefined
 }

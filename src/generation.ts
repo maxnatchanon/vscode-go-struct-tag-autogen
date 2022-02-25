@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import config from "./config"
 import { formatField } from './formatter'
-import { supportedCases } from './constant'
+import { supportedCases } from './constants'
 
 export function executeGenerateTagCommand(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
     const document = textEditor.document

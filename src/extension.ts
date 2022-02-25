@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import config from './config'
 import { executeGenerateTagCommand } from './generation'
-import { supportedTags } from './constant'
+import { supportedTags } from './constants'
 import { getTagSuggestions } from './tagSuggestion'
 import { getValueSuggestions } from './valueSuggestion'
 
