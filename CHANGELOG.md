@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.2 - 2022-03-05
+- Fix bugs
+    - Suggestions not show up when field type has `[]` characters
+
 ## 1.0.1 - 2022-02-25
 - Add tag suport: form
 - Fix bugs
