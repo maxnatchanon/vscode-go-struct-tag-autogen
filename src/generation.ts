@@ -59,7 +59,7 @@ function getFieldLines(start: number, end: number, document: vscode.TextDocument
 }
 
 function getStructScope(line: number, document: vscode.TextDocument): { start: number, end: number } {
-	const head = /type\s+\w+\s+struct\s+{/
+	const head = /type\s+\w+\s+struct\s*{/
 	const tail = /}/
 
 	let headLine = -1
