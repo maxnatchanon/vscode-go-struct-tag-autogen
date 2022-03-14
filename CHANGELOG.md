@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.3 - 2022-03-14
+- Fix bugs
+    - Tag generation not replace all placeholders (#5)
+
 ## 1.0.2 - 2022-03-05
 - Fix bugs
     - Suggestions not show up when field type has `[]` characters
