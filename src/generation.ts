@@ -99,7 +99,8 @@ function generateTags(field: string): string {
 	
 	let tags = cfg.tags
 	for (let c of supportedCases) {
-		tags = tags.replace(`{{${c}}}`, formatField(field, c))
+		const r = new RegExp(`{{${c}}}`, 'g')
+		tags = tags.replace(r, formatField(field, c))
 	}
 	return tags
 }
