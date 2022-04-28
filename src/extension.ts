@@ -1,7 +1,6 @@
 import * as vscode from 'vscode'
 import config from './config'
 import { executeGenerateTagCommand } from './generation'
-import { supportedTags } from './constants'
 import { getTagSuggestions } from './tagSuggestion'
 import { getValueSuggestions } from './valueSuggestion'
 
@@ -30,7 +29,7 @@ export function deactivate(context: vscode.ExtensionContext) {
 }
 
 function registerTagSuggestion(): vscode.Disposable {
-	const chars = supportedTags.join('').split('')
+	const chars = config.getTagSuggestionSupportedTags().join('').split('')
 	return vscode.languages.registerCompletionItemProvider(
 		'go',
 		{

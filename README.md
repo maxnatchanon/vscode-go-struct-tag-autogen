@@ -7,8 +7,7 @@
 **Struct tag autocomplete**  
 Variable cases and options are customizable ([view config](#tag-autocomplete-config))  
 
-Currently supported tags: `json` | `bson` | `form` | `binding`  
-Currently supported cases: `camel` | `snake` | `pascal` | `none`
+Currently supported cases: `camel` | `snake` | `uppersnake` | `pascal` | `none`
 
 ![Tag Suggestion Preview 1](https://raw.githubusercontent.com/maxnatchanon/vscode-go-struct-tag-autogen/main/assets/gif/tag-suggestion-0.gif)
 
@@ -40,65 +39,53 @@ Open `Command Palette` (⌘ + ⇧ + P) then `Preferences: Open Settings (JSON)`
 
 ## Configs
 ### **Tag Autocomplete Config**
-There are two types of tags — with and without variable name  
 
-**Tag with Variable Name (`json`, `bson`, `form`)**
 - **Config Key**  
-    `goStructTagAutogen.suggestion.json`  
-    `goStructTagAutogen.suggestion.bson`  
-    `goStructTagAutogen.suggestion.form`  
+    `goStructTagAutogen.tagSuggestion`
 - **Config Object**  
-    |Key|Description|Type|Default|
-    |---|-----------|----|-------|
-    |enabled|Enable autocomplete for this tag|Boolean|true|
-    |cases|Variable formatting for this tag|Case[]|*See below*|
-    |options|Options after variable name|String[]|*See below*|
-
-    Supported cases: `camel`, `snake`, `pascal`, `none`  
-    When multiple cases are set, every combinations of cases and options will appear in the autocomplete suggestion.
-
-    Any string can be put in the `options` array. The only special case is `-` (dash).  
-    Instead of appending after variable name like `omitempty` ( `json:"field,omitempty"` ),it will replace the variable name ( `json:"-"` ).
-- **Default Value**
-    ```json
-    "goStructTagAutogen.tagSuggestion.json": {
-        "enabled": true,
-        "cases": ["camel"],
-        "options": ["-", "omitempty"]
-    },
-    "goStructTagAutogen.tagSuggestion.bson": {
-        "enabled": true,
-        "cases": ["snake"],
-        "options": ["-", "omitempty"]
-    }
-    "goStructTagAutogen.tagSuggestion.form": {
-        "enabled": true,
-        "cases": ["camel"],
-        "options": ["-", "omitempty"]
+    ```
+    {
+        "TAG_NAME_1": {
+            "cases": ["CASE_1", "CASE_2", ...]
+            "options": ["OPTION_1", "OPTION_2", ...]
+        },
+        ...
     }
     ```
-    The extension will fallback to the default above when no config provided or missing some fields in the config object.  
-    eg. If only `goStructTagAutogen.tagSuggestion.bson.options` is set in the config file, the default `case` (`snake`) will be used.
+    |Key|Description|Type|
+    |---|-----------|----|
+    |cases|Field name formatting for this tag|Case[]|
+    |options|Options after the field name|String[]|
 
-#### **Tag without Variable Name (`binding`)**
-- **Config Key**  
-    `goStructTagAutogen.tagSuggestion.binding`  
-- **Config Object**  
-    |Key|Description|Type|Default|
-    |---|-----------|----|-------|
-    |enabled|Enable autocomplete for this tag|Boolean|true|
-    |choices|Value choices|String[]|*See below*|
+    Supported cases: `camel`, `snake`, `uppersnake`, `pascal`, `none`  
+    When multiple cases are set, every cases (and every combinations of cases and options) will appear in the autocomplete suggestion.  
 
-    Any string can be put in the `choices` array. These texts will be put in the tag value.  
-    `binding:"{{choice}}"` — eg. `binding:"required"`
+    Any string can be put in the `options` array.  
+    The only special case is `-` (dash). Instead of appending after variable name like `omitempty` ( `json:"field,omitempty"` ), it will replace the variable name ( `json:"-"` ).  
+
+    Each tag needs at least one config, either `cases` or `options`.  
+    - Config only `cases` — suggest a list of tags with the formatted field name as the value
+    - Config only `options` — suggest a list of tags with each option as the value
+    - Config both `cases` and `options`
+        - Example: The default `json` config below will suggest `json:"fieldName"`, `json:"fieldName,omitempty"` and `json:"-"`
+
 - **Default Value**
     ```json
-    "goStructTagAutogen.tagSuggestion.binding": {
-        "enabled": true,
-        "choices": ["required"]
+    "goStructTagAutogen.tagSuggestion": {
+        "json": {
+            "cases": ["camel"],
+            "options": ["omitempty", "-"]
+        },
+        "bson": {
+            "cases": ["snake"],
+            "options": ["omitempty", "-"]
+        },
+        "binding": {
+            "options": ["required"]
+        }
     }
     ```
-    The extension will fallback to the default above when no config provided or missing some fields in the config object.
+    The extension will fallback to the default above when no config  provided.
 
 ### **Tag Value Autocomplete Config**
 - **Config Key**  
@@ -112,12 +99,12 @@ There are two types of tags — with and without variable name
         ...
     }
     ```
-    Tag name can be anything (doesn't need to be supported by the tag autocomplete).
+    Tag name can be anything.
 
     When typing a value for a tag in the config, the texts in the array will be used to build the suggestion list.  
-    Any string can be put in the array. No special case or character that has to be escaped.    
+    Any string can be put in the array. No special case or character that need to be escaped.    
 
-    Tag value autocomplete will be triggered by every suggestions of this config (also `"` and `,`).
+    Tag value autocomplete will be triggered when the typing value matched the pattern in this config. (also when typing `"` or `,`)
 
 - **Default Value**
     ```json
@@ -132,20 +119,26 @@ There are two types of tags — with and without variable name
 - **Config key**  
     `goStructTagAutogen.generation`  
 - **Config object**
+    ```
+    {
+        "template": "GEN_TEMPLATE"
+    }
+    ```
     |Key|Description|Type|Default|
     |---|-----------|----|-------|
-    |tags|Struct tag template for the command|String|*See below*|
+    |template|Struct tag template for the command|String|*See below*|
     
 - **Default value**
     ```json
     "goStructTagAutogen.generation": {
-        "tags": "json:\"{{camel}}\" bson:\"{{snake}}\""
+        "template": "json:\"{{camel}}\" bson:\"{{snake}}\""
     }
     ```
     Double quotes need to be escaped (`\"`)
 - **Available Placeholders**
     - `{{camel}}`  for the camel cased version of the field name
     - `{{snake}}` for the snake cased version of the field name
+    - `{{uppersnake}}` for the upper snake cased version of the field name
     - `{{pascal}}` for the pascal cased version of the field name
     - `{{none}}` for the field name
 - **Example**
@@ -167,4 +160,4 @@ There are two types of tags — with and without variable name
 
 ## Contibuting
 
-If you want to add new tags, new cases, or new features, you can follow the guide in [CONTRIBUTING.md](https://github.com/maxnatchanon/vscode-go-struct-tag-autogen/blob/main/CONTRIBUTING.md).
+If you want to add new cases, or new features, you can follow the guide in [CONTRIBUTING.md](https://github.com/maxnatchanon/vscode-go-struct-tag-autogen/blob/main/CONTRIBUTING.md).
