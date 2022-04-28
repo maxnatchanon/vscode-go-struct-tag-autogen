@@ -1,5 +1,4 @@
 import * as vscode from 'vscode'
-import { workerData } from 'worker_threads'
 import config from './config'
 
 export function getValueSuggestions(text: string): vscode.CompletionItem[] {
@@ -25,7 +24,7 @@ function getTag(text: string): { currentTag: string, partial: string, prev: stri
     const tags = list[1].split(/\s/)
     const edittingTag = tags[tags.length - 1]
     if (edittingTag.split('"').length !== 2) {
-        throw('not matched')
+        throw new Error('not matched')
     }
     const values = edittingTag.split('"')[1].split(',')
     return {
@@ -43,5 +42,3 @@ function getSuggestionList(tag: string): string[] {
     }
     return list
 }
-
-// UserID string `json:"userId,

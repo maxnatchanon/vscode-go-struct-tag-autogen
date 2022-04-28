@@ -24,7 +24,7 @@ export function executeGenerateTagCommand(textEditor: vscode.TextEditor, edit: v
 }
 
 function getField(text: string): (string | null) {
-	const field = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_\[\]]*/
+	const field = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_\.\[\]]*/
 	const list = field.exec(text)
 	if (!list) {
 		return null
@@ -97,7 +97,7 @@ function getStructScope(line: number, document: vscode.TextDocument): { start: n
 function generateTags(field: string): string {
 	const cfg = config.getGenerationConfig()
 	
-	let tags = cfg.tags
+	let tags = cfg.template
 	for (let c of supportedCases) {
 		const r = new RegExp(`{{${c}}}`, 'g')
 		tags = tags.replace(r, formatField(field, c))

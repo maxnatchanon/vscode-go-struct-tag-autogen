@@ -1,8 +1,6 @@
 import * as vscode from 'vscode'
 import config from './config'
 import { formatField } from './formatter'
-import { supportedNonVariableTags, supportedTags, supportedVariableTags } from './constants'
-import { Tag } from './types'
 
 export function getTagSuggestions(text: string): vscode.CompletionItem[] {
     let field: string
@@ -28,7 +26,7 @@ export function getTagSuggestions(text: string): vscode.CompletionItem[] {
 }
 
 function getFieldAndTag(text: string): { field: string, partialTag: string } {
-	const regex = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_\d\[\]]*\s+`(.*)/
+	const regex = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_\d\.\[\]]*\s+`(.*)/
 	const list = regex.exec(text)
 	if (!list) {
 		throw new Error('not matched')
@@ -43,59 +41,47 @@ function getFieldAndTag(text: string): { field: string, partialTag: string } {
 	}
 }
 
-
-
-function getMatchedTags(partialTag: string): Tag[] {
-	let matched: Tag[] = []
-	for (let tag of supportedTags) {
+function getMatchedTags(partialTag: string): string[] {
+	let matched: string[] = []
+	for (let tag of config.getTagSuggestionSupportedTags()) {
 		if (!tag.startsWith(partialTag)) continue
 		matched.push(tag)
 	}
 	return matched
 }
 
-function generateCompletionItems(tag: Tag, field: string): vscode.CompletionItem[] {
-
-	if (supportedVariableTags.includes(tag)) {
-		return getVariableCompletion(field, tag)
-	}
-	if (supportedNonVariableTags.includes(tag)) {
-		return getNonVariableCompletion(tag)
-	}
-	return []
-}
-
-function getVariableCompletion(field: string, tag: Tag): vscode.CompletionItem[] {
+function generateCompletionItems(tag: string, field: string): vscode.CompletionItem[] {
 	const cfg = config.getTagSuggestionConfig(tag)
-	if (!cfg) {
-		return []
-	}
+	if (!cfg) return []
 
-	const formattedFields = cfg.cases.map((c) => formatField(field, c))
+	// cases available - generate with field name
+	if (cfg.cases) {
+		var completions: vscode.CompletionItem[] = []
+		const formattedFields = cfg.cases.map((c) => formatField(field, c))
 	
-	var completions: vscode.CompletionItem[] = []
-	for (let formattedField of formattedFields) {
-		completions.push(new vscode.CompletionItem(`${tag}:"${formattedField}"`, vscode.CompletionItemKind.Text))
-		for (let option of cfg.options) {
-			if (option === '-') {
-				completions.push(new vscode.CompletionItem(`${tag}:"-"`, vscode.CompletionItemKind.Text))
-				continue
+		for (let formattedField of formattedFields) {
+			completions.push(new vscode.CompletionItem(`${tag}:"${formattedField}"`, vscode.CompletionItemKind.Text))
+			if (cfg.options) {
+				for (let option of cfg.options) {
+					if (option === '-') {
+						completions.push(new vscode.CompletionItem(`${tag}:"-"`, vscode.CompletionItemKind.Text))
+						continue
+					}
+					completions.push(new vscode.CompletionItem(`${tag}:"${formattedField},${option}"`, vscode.CompletionItemKind.Text))
+				}
 			}
-			completions.push(new vscode.CompletionItem(`${tag}:"${formattedField},${option}"`, vscode.CompletionItemKind.Text))
 		}
+		return completions
 	}
-	return completions
-}
+	
+	// only options available - generate without field name
+	if (cfg.options) {
+		var completions: vscode.CompletionItem[] = []
+		for (let option of cfg.options) {
+			completions.push(new vscode.CompletionItem(`${tag}:"${option}"`, vscode.CompletionItemKind.Text))
+		}
+		return completions
+	}
 
-function getNonVariableCompletion(tag: Tag): vscode.CompletionItem[] {
-	const cfg = config.getNonVariableTagSuggestionConfig(tag)
-	if (!cfg) {
-		return []
-	}
-
-	var completions: vscode.CompletionItem[] = []
-	for (let choice of cfg.choices) {
-		completions.push(new vscode.CompletionItem(`${tag}:"${choice}"`, vscode.CompletionItemKind.Text))
-	}
-	return completions
+	return []
 }

@@ -8,6 +8,8 @@ export function formatField(field: string, format: Case): string {
             return formatCamel(field)
         case 'snake':
             return formatSnake(field)
+        case 'uppersnake':
+            return formatUpperSnake(field)
         case 'pascal':
             return formatPascal(field)
         default:
@@ -42,6 +44,17 @@ function formatSnake(field: string): string {
             return curr.toLowerCase()
         }
         return `${prev}_${curr.toLowerCase()}`
+    }, '')
+    return result
+}
+
+function formatUpperSnake(field: string): string {
+    const words = splitWords(field)
+    let result = words.reduce((prev, curr, index) => {
+        if (index === 0) {
+            return curr.toUpperCase()
+        }
+        return `${prev}_${curr.toUpperCase()}`
     }, '')
     return result
 }
