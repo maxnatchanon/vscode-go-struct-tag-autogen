@@ -11,11 +11,11 @@ export function executeGenerateTagCommand(textEditor: vscode.TextEditor, edit: v
         try {
             const fieldLines = getFieldLines(start, end, document)
             for (let line of fieldLines) {
-                const field = getField(document.lineAt(line).text)
-				if (field) {
-					const tags = generateTags(field)
-					edit.insert(new vscode.Position(line, document.lineAt(line).range.end.character), ` \`${tags}\``)
-				}
+							const field = getField(document.lineAt(line).text)
+							if (field) {
+								const tags = generateTags(field)
+								edit.insert(new vscode.Position(line, document.lineAt(line).range.end.character), ` \`${tags}\``)
+							}
             }
         } catch (err: any) {
             vscode.window.showErrorMessage(`${err.toString()} (line ${start + 1})`)
@@ -60,21 +60,24 @@ function getFieldLines(start: number, end: number, document: vscode.TextDocument
 
 function getStructScope(line: number, document: vscode.TextDocument): { start: number, end: number } {
 	const head = /type\s+\w+\s+struct\s*{/
-	const tail = /}/
+	const tail = /^\s*}/
 
 	let headLine = -1
 	let tailLine = -1
 	for (let l = line; l >= 0; l--) {
-		if (head.exec(document.lineAt(l).text)) {
+		const currentLine = document.lineAt(l).text
+		if (head.exec(currentLine)) {
 			headLine = l
 			break
 		}
-		if (l < line && tail.exec(document.lineAt(l).text)) {
-			throw new Error('outside struct')
+		if (l < line && tail.exec(currentLine) && !document.lineAt(l+1).text.startsWith(currentLine.split('}')[0])) {
+			throw new Error('outside struct 2')
 		}
 	}
+	const headText = document.lineAt(headLine).text
 	for (let l = line; l < document.lineCount; l++) {
-		if (tail.exec(document.lineAt(l).text)) {
+		const currentLine = document.lineAt(l).text
+		if (tail.exec(currentLine) && headText.startsWith(currentLine.split('}')[0])) {
 			tailLine = l
 			break
 		}
