@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.1.1 - 2022-12-11
+- Fix tag suggestion regex (#9)
+- Fix tag generation regex (#9)
+
 ## 1.1.0 - 2022-04-28
 - Support adding tags dynamically (#7)
 - Minor bug fixes

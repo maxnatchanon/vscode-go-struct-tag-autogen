@@ -26,7 +26,7 @@ export function getTagSuggestions(text: string): vscode.CompletionItem[] {
 }
 
 function getFieldAndTag(text: string): { field: string, partialTag: string } {
-	const regex = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_\d\.\[\]]*\s+`(.*)/
+	const regex = /^\s*([a-zA-Z_][a-zA-Z_\d]*)\s+[a-zA-Z_\d\.\[\]{}\*]*\s+`(.*)/
 	const list = regex.exec(text)
 	if (!list) {
 		throw new Error('not matched')
