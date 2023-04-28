@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.1.2 - 2023-04-28
+- Fix tag generation with comment (#11)
+
 ## 1.1.1 - 2022-12-11
 - Fix tag suggestion regex (#9)
 - Fix tag generation regex (#9)

@@ -15,7 +15,7 @@
 		"json",
 		"bson"
 	],
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"publisher": "maxnatchanon",
 	"author": {
 		"name": "Natchanon A."
@@ -68,15 +68,27 @@
 					"type": "object",
 					"default": {
 						"json": {
-							"cases": ["camel"],
-							"options": ["-", "omitempty"]
+							"cases": [
+								"camel"
+							],
+							"options": [
+								"-",
+								"omitempty"
+							]
 						},
 						"bson": {
-							"cases": ["snake"],
-							"options": ["-", "omitempty"]
+							"cases": [
+								"snake"
+							],
+							"options": [
+								"-",
+								"omitempty"
+							]
 						},
 						"binding": {
-							"options": ["required"]
+							"options": [
+								"required"
+							]
 						}
 					},
 					"description": "Go struct tag suggestion config. Go to https://github.com/maxnatchanon/vscode-go-struct-tag-autogen for more detail."
@@ -84,9 +96,15 @@
 				"goStructTagAutogen.valueSuggestion": {
 					"type": "object",
 					"default": {
-						"json": ["omitempty"],
-						"bson": ["omitempty"],
-						"binding": ["required"]
+						"json": [
+							"omitempty"
+						],
+						"bson": [
+							"omitempty"
+						],
+						"binding": [
+							"required"
+						]
 					},
 					"description": "Go struct tag value suggestion config. Go to https://github.com/maxnatchanon/vscode-go-struct-tag-autogen for more detail."
 				},
