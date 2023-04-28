@@ -1,4 +1,4 @@
-import { Case } from "./types";
+import { Case } from './types';
 
 export function formatField(field: string, format: Case): string {
     switch (format) {
